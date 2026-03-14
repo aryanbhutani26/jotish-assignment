@@ -1,15 +1,18 @@
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAudit } from '../contexts/AuditContext';
 import CameraInterface from '../components/CameraInterface';
+import SignatureCanvas from '../components/SignatureCanvas';
 import { useState } from 'react';
 
 function DetailsPage() {
   const { id } = useParams<{ id: string }>();
-  const { employees } = useAudit();
+  const { employees, setAuditImage } = useAudit();
   const navigate = useNavigate();
   const [cameraActive, setCameraActive] = useState(false);
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [capturedImage, setCapturedImage] = useState<string | null>(null);
+  const [canvasDims, setCanvasDims] = useState<{ width: number; height: number } | null>(null);
+  const [showSignature, setShowSignature] = useState(false);
 
   // Show not-found if employees not loaded or id doesn't match
   if (employees.length === 0) {
@@ -96,7 +99,7 @@ function DetailsPage() {
           </dl>
         </section>
 
-        {/* Camera section */}
+        {/* Camera / Signature section */}
         <section style={styles.card}>
           <h3 style={styles.sectionTitle}>Capture Audit Photo</h3>
 
@@ -106,23 +109,47 @@ function DetailsPage() {
             </div>
           )}
 
-          {capturedImage ? (
+          {capturedImage && showSignature && canvasDims ? (
+            <SignatureCanvas
+              backgroundImage={capturedImage}
+              width={canvasDims.width}
+              height={canvasDims.height}
+              onConfirm={(mergedDataUrl) => {
+                setAuditImage(mergedDataUrl);
+                navigate('/analytics');
+              }}
+            />
+          ) : capturedImage ? (
             <div>
               <img
                 src={capturedImage}
                 alt="Captured audit photo"
                 style={styles.capturedImg}
-              />
-              <button
-                style={styles.secondaryBtn}
-                onClick={() => {
-                  setCapturedImage(null);
-                  setCameraActive(false);
-                  setCameraError(null);
+                onLoad={(e) => {
+                  const img = e.currentTarget;
+                  setCanvasDims({ width: img.naturalWidth || img.width, height: img.naturalHeight || img.height });
                 }}
-              >
-                Retake
-              </button>
+              />
+              <div style={{ display: 'flex', gap: '10px', marginTop: '8px' }}>
+                <button
+                  style={styles.primaryBtn}
+                  onClick={() => setShowSignature(true)}
+                >
+                  Add Signature
+                </button>
+                <button
+                  style={styles.secondaryBtn}
+                  onClick={() => {
+                    setCapturedImage(null);
+                    setShowSignature(false);
+                    setCanvasDims(null);
+                    setCameraActive(false);
+                    setCameraError(null);
+                  }}
+                >
+                  Retake
+                </button>
+              </div>
             </div>
           ) : cameraActive ? (
             <CameraInterface
