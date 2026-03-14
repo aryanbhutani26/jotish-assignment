@@ -1,5 +1,6 @@
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { AuditProvider } from './contexts/AuditContext';
 import LoginPage from './pages/LoginPage';
 import ListPage from './pages/ListPage';
 import DetailsPage from './pages/DetailsPage';
@@ -46,9 +47,11 @@ function AppRoutes() {
 function App() {
   return (
     <AuthProvider>
-      <BrowserRouter>
-        <AppRoutes />
-      </BrowserRouter>
+      <AuditProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </AuditProvider>
     </AuthProvider>
   );
 }
