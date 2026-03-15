@@ -55,7 +55,7 @@ Password: Test123
 
 ---
 
-## Known Intentional Bug (Requirement 5.6)
+## Known Intentional Bug 
 
 **Location**: `src/hooks/useVirtualizer.ts`
 
@@ -101,7 +101,7 @@ offsetY     = start * rowHeight
 
 ---
 
-## CITY_COORDS Lookup (Requirement 4.7)
+## CITY_COORDS Lookup 
 
 The `CityMap` component (`src/components/CityMap.tsx`) uses [Leaflet](https://leafletjs.com/) to display a marker for each city present in the employee dataset. Because the Employee API returns city names as plain strings (not coordinates), a static lookup table is used to resolve geographic positions.
 

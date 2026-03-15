@@ -16,9 +16,33 @@ export async function fetchEmployees(): Promise<Employee[]> {
 
   const data: unknown = await response.json();
 
-  if (!Array.isArray(data)) {
+  // API returns { TABLE_DATA: { data: [name, dept, city, id, date, salary][] } }
+  const rows =
+    data != null &&
+    typeof data === 'object' &&
+    'TABLE_DATA' in data &&
+    (data as Record<string, unknown>).TABLE_DATA != null &&
+    typeof (data as Record<string, unknown>).TABLE_DATA === 'object' &&
+    'data' in ((data as Record<string, unknown>).TABLE_DATA as object)
+      ? ((data as Record<string, { data: unknown }>).TABLE_DATA.data)
+      : null;
+
+  if (!Array.isArray(rows)) {
     throw new Error('Malformed response: expected an array of employees');
   }
 
-  return data as Employee[];
+  return rows.map((row: unknown, index: number): Employee => {
+    if (Array.isArray(row)) {
+      const salaryStr = String(row[5] ?? '0').replace(/[$,]/g, '');
+      return {
+        id: String(row[3] ?? index),
+        name: String(row[0] ?? ''),
+        department: String(row[1] ?? ''),
+        city: String(row[2] ?? ''),
+        salary: parseFloat(salaryStr) || 0,
+      };
+    }
+    // Already an object (future-proofing)
+    return row as Employee;
+  });
 }

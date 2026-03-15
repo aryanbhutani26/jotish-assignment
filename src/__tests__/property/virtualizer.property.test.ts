@@ -23,7 +23,7 @@ function computeVirtualizer(
 describe('Virtualizer properties', () => {
   // Property 6: Virtualizer visible range is mathematically correct
   it('P6: visibleRange start and end match the expected formulas', () => {
-    // Validates: Requirements 2.4, 2.5
+    
     fc.assert(
       fc.property(
         fc.integer({ min: 0, max: 100000 }),   // scrollTop
@@ -52,7 +52,7 @@ describe('Virtualizer properties', () => {
 
   // Property 7: Virtualizer total height invariant
   it('P7: totalHeight always equals totalCount * rowHeight regardless of scroll position', () => {
-    // Validates: Requirements 2.6
+   
     fc.assert(
       fc.property(
         fc.integer({ min: 0, max: 100000 }),   // scrollTop

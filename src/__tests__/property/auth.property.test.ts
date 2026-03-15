@@ -43,7 +43,7 @@ describe('Auth property tests', () => {
 
   // Property 1: Invalid credentials always produce an error
   it('P1: any credentials other than testuser/Test123 return false from login', () => {
-    // Validates: Requirements 1.3
+    
     fc.assert(
       fc.property(
         fc.string(),
@@ -61,7 +61,7 @@ describe('Auth property tests', () => {
 
   // Property 2: Auth state round-trip persistence
   it('P2: writing isAuthenticated=true to localStorage and restoring returns true', () => {
-    // Validates: Requirements 1.4, 1.5
+    
     fc.assert(
       fc.property(
         fc.constant(true),
@@ -90,7 +90,7 @@ describe('Auth property tests', () => {
   });
 
   it('P2: valid login always persists isAuthenticated=true', () => {
-    // Validates: Requirements 1.4
+    
     const result = loginLogic(VALID_USERNAME, VALID_PASSWORD);
     if (result) {
       persistAuth(true);

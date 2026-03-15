@@ -11,7 +11,7 @@ export function useVirtualizer(options: UseVirtualizerOptions): VirtualizerResul
   const totalHeight = totalCount * rowHeight;
   const offsetY = start * rowHeight;
 
-  // INTENTIONAL BUG (Requirement 5.6): result object is returned directly without useMemo.
+  // INTENTIONAL BUG : result object is returned directly without useMemo.
   // A new object reference is created on every render, causing all visible EmployeeRow
   // components to re-render unnecessarily even when the visible range hasn't changed.
   return {
