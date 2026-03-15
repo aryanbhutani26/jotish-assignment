@@ -44,7 +44,7 @@ function EmployeeRow({ employee, style, onClick }: EmployeeRowProps) {
         if (e.key === 'Enter' || e.key === ' ') onClick();
       }}
     >
-      <span style={{ ...cellStyle, flex: '2', fontWeight: 500 }}>{employee.name}</span>
+      <span style={{ ...cellStyle, flex: '2', color: '#6b7280',fontWeight: 500 }}>{employee.name}</span>
       <span style={{ ...cellStyle, flex: '1', color: '#6b7280' }}>{employee.city}</span>
       <span style={{ ...cellStyle, flex: '1', textAlign: 'right', color: '#059669' }}>
         ${Number(employee.salary).toLocaleString()}
